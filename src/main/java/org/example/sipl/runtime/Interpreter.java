@@ -2,6 +2,8 @@ package org.example.sipl.runtime;
 
 import org.example.sipl.ast.Aexp;
 import org.example.sipl.ast.Bexp;
+import org.example.sipl.ast.Stm;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,5 +55,40 @@ public class Interpreter {
             case Bexp.Or or -> evalBexp(or.left) || evalBexp(or.right);
             default -> throw new IllegalStateException("Невідомий вузол Bexp: " + expr);
         };
+    }
+
+    /**
+     * Виконує команди (оператори) програми.
+     */
+    public void execute(Stm stmt) {
+        switch (stmt) {
+            case Stm.Assign assign -> {
+                int value = evalAexp(assign.expr);
+                memory.put(assign.varName, value);
+            }
+            case Stm.Skip skip -> {
+                // skip
+            }
+            case Stm.Block block -> {
+                execute(block.body);
+            }
+            case Stm.Comp comp -> {
+                execute(comp.stm1);
+                execute(comp.stm2);
+            }
+            case Stm.If ifStm -> {
+                if (evalBexp(ifStm.condition)) {
+                    execute(ifStm.thenBranch);
+                } else {
+                    execute(ifStm.elseBranch);
+                }
+            }
+            case Stm.While whileStm -> {
+                while (evalBexp(whileStm.condition)) {
+                    execute(whileStm.body);
+                }
+            }
+            default -> throw new IllegalStateException("Невідомий вузол Stm: " + stmt);
+        }
     }
 }
