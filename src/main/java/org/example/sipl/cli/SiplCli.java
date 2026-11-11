@@ -12,6 +12,7 @@ import picocli.CommandLine.Command;
                 ParseCommand.class,
                 CheckCommand.class,
                 RunCommand.class,
+                TraceCommand.class,
                 CommandLine.HelpCommand.class
         }
 )
