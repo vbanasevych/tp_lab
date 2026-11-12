@@ -4,7 +4,9 @@ import org.example.sipl.ast.Aexp;
 import org.example.sipl.ast.Bexp;
 import org.example.sipl.ast.Stm;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Interpreter {
@@ -12,8 +14,14 @@ public class Interpreter {
     // зберігає поточні значення всіх змінних
     private final Map<String, Integer> memory = new HashMap<>();
 
+    private final List<ExecutionListener> listeners = new ArrayList<>();
+
     public Map<String, Integer> getMemory() {
         return memory;
+    }
+
+    public void addListener(ExecutionListener listener) {
+        listeners.add(listener);
     }
 
     /**
@@ -61,6 +69,11 @@ public class Interpreter {
      * Виконує команди (оператори) програми.
      */
     public void execute(Stm stmt) {
+        Map<String, Integer> memSnapshot = Map.copyOf(memory);
+        for (ExecutionListener l : listeners) {
+            l.onBeforeStatement(stmt, memSnapshot);
+        }
+
         switch (stmt) {
             case Stm.Assign assign -> {
                 int value = evalAexp(assign.expr);
@@ -89,6 +102,11 @@ public class Interpreter {
                 }
             }
             default -> throw new IllegalStateException("Невідомий вузол Stm: " + stmt);
+        }
+
+        Map<String, Integer> memSnapshotAfter = Map.copyOf(memory);
+        for (ExecutionListener l : listeners) {
+            l.onAfterStatement(stmt, memSnapshotAfter);
         }
     }
 }
