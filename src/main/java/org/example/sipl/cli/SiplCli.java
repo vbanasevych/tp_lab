@@ -14,6 +14,7 @@ import picocli.CommandLine.Command;
                 RunCommand.class,
                 TraceCommand.class,
                 VisParseCommand.class,
+                VisAstCommand.class,
                 CommandLine.HelpCommand.class
         }
 )
