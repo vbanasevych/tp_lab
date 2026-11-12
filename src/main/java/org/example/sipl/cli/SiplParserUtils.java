@@ -20,4 +20,9 @@ public class SiplParserUtils {
         var tree = parser.program();
         return new AstBuilderVisitor().visit(tree);
     }
+
+    public static SIPLParser createParser(File file) throws IOException {
+        org.example.sipl.SIPLLexer lexer = new org.example.sipl.SIPLLexer(CharStreams.fromPath(file.toPath()));
+        return new SIPLParser(new CommonTokenStream(lexer));
+    }
 }
