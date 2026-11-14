@@ -7,6 +7,37 @@
     <groupId>org.knu.tp</groupId>
     <artifactId>tp_lab</artifactId>
     <version>1.0.0</version>
+    <name>SIPL Language Toolkit</name>
+    <description>Parser, typed AST builder, interpreter, event tracer, and Graphviz/JSON visualizer for SIPL.</description>
+    <url>https://github.com/vbanasevych/tp_lab</url>
+
+    <licenses>
+        <license>
+            <name>MIT License</name>
+            <url>https://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <name>Viktoriia Banasevych</name>
+            <organization>KNU</organization>
+        </developer>
+    </developers>
+
+    <scm>
+        <connection>scm:git:git://github.com/vbanasevych/tp_lab.git</connection>
+        <developerConnection>scm:git:ssh://github.com:vbanasevych/tp_lab.git</developerConnection>
+        <url>https://github.com/vbanasevych/tp_lab</url>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub Packages</name>
+            <url>https://maven.pkg.github.com/vbanasevych/tp_lab</url>
+        </repository>
+    </distributionManagement>
 
     <properties>
         <maven.compiler.source>26</maven.compiler.source>
@@ -112,6 +143,38 @@
                     </execution>
                 </executions>
             </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.3.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.10.1</version>
+                <configuration>
+                    <doclint>none</doclint>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 </project>
