@@ -1,0 +1,13 @@
+begin
+    n := 7;
+    a := 0;
+    b := 1;
+    i := 1;
+    while not (i = n) do
+    begin
+        temp := a + b;
+        a := b;
+        b := temp;
+        i := i + 1
+    end
+end

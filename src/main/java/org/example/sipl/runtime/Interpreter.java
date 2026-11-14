@@ -23,6 +23,8 @@ public class Interpreter {
     public void addListener(ExecutionListener listener) {
         listeners.add(listener);
     }
+    private static final int MAX_STEPS = 10_000;
+    private int stepCount = 0;
 
     /**
      * Обчислює арифметичні вирази.
@@ -68,7 +70,15 @@ public class Interpreter {
     /**
      * Виконує команди (оператори) програми.
      */
+
     public void execute(Stm stmt) {
+        if (++stepCount > MAX_STEPS) {
+            String pos = stmt.getSpan() != null ? stmt.getSpan().toString() : "[?:?]";
+            throw new IllegalStateException(
+                    "Перевищено ліміт кроків виконання (" + MAX_STEPS + ") на вузлі " + pos + " (можливий нескінченний цикл)"
+            );
+        }
+
         Map<String, Integer> memSnapshot = Map.copyOf(memory);
         for (ExecutionListener l : listeners) {
             l.onBeforeStatement(stmt, memSnapshot);
